@@ -35,6 +35,7 @@
   <link rel="stylesheet" href="{% static 'css/aos.css' %}">
 
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
 
 </head>
 <body>
@@ -47,7 +48,7 @@
               <div class="d-flex align-items-center justify-content-between">
                 <div class="logo">
                   <div class="site-logo">
-                    <a href="index.html" class="js-logo-clone" style=""><img src="{% static 'images/logo.png' %}" style="width:100%;height:60px;" alt=""></a>
+                    <a href="/" class="js-logo-clone" style=""><img src="{% static 'images/logo.png' %}" style="width:100%;height:60px;" alt=""></a>
                   </div>
                 </div>
                 <div class="main-nav d-none d-lg-block">
@@ -73,7 +74,7 @@
                           
                         </ul>
                       </li>
-                      <li><a href="/">About</a></li>
+                      <li><a href="/about">About</a></li>
                       <li><a href="/contact">Contact</a></li>
                     </ul>
                   </nav>
@@ -92,6 +93,56 @@
     {% block content %}
     
     {% endblock content %}
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
+
+            <div class="block-7">
+              <h3 class="footer-heading mb-4">About Us</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius quae reiciendis distinctio voluptates
+                sed dolorum excepturi iure eaque, aut unde.</p>
+            </div>
+
+          </div>
+          <div class="col-lg-3 mx-auto mb-5 mb-lg-0">
+            <h3 class="footer-heading mb-4">Quick Links</h3>
+            <ul class="list-unstyled">
+              <li><a href="#">Link</a></li>
+              <li><a href="#">Link</a></li>
+              <li><a href="#">Link</a></li>
+              <li><a href="#">Link</a></li>
+            </ul>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="block-5 mb-5">
+              <h3 class="footer-heading mb-4">Contact Info</h3>
+              <ul class="list-unstyled">
+                <li class="address">203 Fake St. Mountain View, San Francisco, California, USA</li>
+                <li class="phone"><a href="tel://23923929210">+2 392 3929 210</a></li>
+                <li class="email">emailaddress@domain.com</li>
+              </ul>
+            </div>
+
+
+          </div>
+        </div>
+        <div class="row pt-5 mt-5 text-center">
+          <div class="col-md-12">
+            <p>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              Copyright &copy;
+              <script>document.write(new Date().getFullYear());</script> All rights reserved By <i class="icon-heart" aria-hidden="true"></i> by <a href="/" target="_blank"
+                class="text-primary">HealthFinda</a>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </footer>
     </div>
     <script src="https://use.fontawesome.com/47c6d34241.js"></script>
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>

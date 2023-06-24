@@ -40,3 +40,6 @@ def contact_submit(request):
     else:
         # Handle GET requests or other methods if needed
         return render(request, 'pages/contact.html')
+    
+def about(request):
+    return render(request,"pages/about.html")
