@@ -137,6 +137,16 @@ STATIC_ROOT = BASE_DIR/'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# Email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.zoho.com'
+EMAIL_PORT = 465  # Use port 465 for SSL/TLS
+EMAIL_HOST_USER = 'admin@healthfinda.com'  # Replace with your Zoho Mail email address
+EMAIL_HOST_PASSWORD = 'Winter984523**'  # Replace with your Zoho Mail email password
+EMAIL_USE_SSL = True
+EMAIL_USE_TLS = False
+DEFAULT_FROM_EMAIL = 'admin@healthfinda.com'  # Replace with your Zoho Mail email address
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
