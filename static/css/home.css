@@ -1,0 +1,53 @@
+.search-container{
+    border: 1px solid blue;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    
+}
+.select-option{
+    flex-basis: 20%;
+    border-right: 1px solid blue;
+}
+.select-option select{
+    outline: none;
+    border: none;
+    padding: 10px;
+    background-color: white;
+
+}
+.search-inp{
+    flex-basis: 60%;
+  
+}
+.search-inp2{
+    flex-basis: 80%;
+  
+}
+.submit-button{
+    flex-basis: 20%;
+}
+.submit-button button{
+    padding: 8px;
+    background-color: blue;
+    color: white;
+    border: none;
+    width: 100%;
+}
+.search-inp input{
+    width: 100%;
+    padding: 6px;
+    outline: none;
+    border: none;
+    font-size: 18px;
+}
+.search-inp2 input{
+    width: 100%;
+    padding: 6px;
+    outline: none;
+    border: none;
+    font-size: 18px;
+}
