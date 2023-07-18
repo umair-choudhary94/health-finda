@@ -55,7 +55,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
-
+CSRF_TRUSTED_ORIGINS = ["https://healthfinda.up.railway.app"]
 ROOT_URLCONF = 'mysite.urls'
 
 TEMPLATES = [
