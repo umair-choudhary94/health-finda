@@ -1,0 +1,49 @@
+{% extends "basic.html" %}
+{% load static %}
+{% block content %}
+<div class="bg-light py-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 mb-0">
+          <a href="/">Home</a> <span class="mx-2 mb-0">/</span>
+          <strong class="text-black">Book Now</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="site-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h2 class="h3 mb-5 text-black">Book Now</h2>
+        </div>
+        <div class="col-md-12">
+            
+  
+            <form action="/makeappointment/{{id}}/" method="post">
+                {% csrf_token %}
+              
+                <div class="p-3 p-lg-5 border">
+                  <h4>Doctor Name : {{avail.doctor}}</h4>
+                  <h6 class="text-dark">Date and Time : {{avail.available_date}} {{avail.available_time}}</h6>
+              
+                  <div class="form-group row">
+                    <div class="col-md-12">
+                      <label for="reason" class="text-black">Write Your Reason Here</label>
+                      <textarea name="reason" id="reason" cols="30" rows="7" class="form-control" required></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-lg-2">
+                      <input type="submit" class="btn btn-primary btn-lg btn-block" value="Book Now">
+                    </div>
+                  </div>
+                </div>
+              </form>
+              
+        </div>
+        
+      </div>
+    </div>
+  </div>
+{% endblock content %}

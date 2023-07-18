@@ -1,0 +1,53 @@
+
+
+
+{% extends "basic.html" %}
+
+
+   {% load static %}
+   {% block content %}
+   <style>
+     .input-form{
+       padding:5px;
+       width:100%;
+     }
+     .form-button{
+       padding:7px 10px;
+       background-color:blue;
+       color:white;
+       border:1px solid blue;
+       border-radius: 5px;
+     }
+   </style>
+   
+   <div class="site-blocks-cover p-md-4 p-2" style="background-image: url('{% static 'images/hero_1.jpg' %}');">
+    
+   <div class="row">
+     
+     <div class="col-md-5 col-12 mx-auto mt-5">
+       <div class="card p-md-4 p-3 bordered shadow-0 mt-2" style="background-color: rgba(255, 255, 255, 0.5);">
+        <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+          
+          <label for="username" class="text-dark">Username:</label>
+          <input type="text" name="username" placeholder="Enter Username" class="input-form" required><br><br>
+          
+          <label for="password" class="text-dark">Password:</label>
+          <input type="password" name="password" placeholder="Enter Password" class="input-form" required><br><br>
+          
+          <input type="submit" value="Log In" class="form-button">
+        </form>
+       </div>
+     </div>
+     
+   </div>
+   
+   
+   </div>
+   
+   
+   
+   {% endblock content %}
+   
+   
+       

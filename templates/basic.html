@@ -55,11 +55,11 @@
                   <nav class="site-navigation text-right text-md-center" role="navigation">
                     <ul class="site-menu js-clone-nav d-none d-lg-block">
                       <li class="active"><a href="/">Home</a></li>
-                      <li><a href="/">Help</a></li>
+                      {% comment %} <li><a href="/">Help</a></li> {% endcomment %}
                       <li class="has-children">
                         <a href="#">Join</a>
                         <ul class="dropdown">
-                          <li><a href="#">For Business</a></li>
+                          {% comment %} <li><a href="#">For Business</a></li> {% endcomment %}
                           {% comment %} <li class="has-children">
                             <a href="#">Vitamins</a>
                             <ul class="dropdown">
@@ -69,12 +69,12 @@
                               <li><a href="#">Tea &amp; Coffee</a></li>
                             </ul>
                           </li> {% endcomment %}
-                          <li><a href="#">Join HealthFinda</a></li>
-                          <li><a href="#">Practice Login</a></li>
+                          <li><a href="/registration/signup/">Join HealthFinda</a></li>
+                          <li><a href="/registration/login/">Practice Login</a></li>
                           
                         </ul>
                       </li>
-                      <li><a href="/about">About</a></li>
+                      <li><a href="/about" class="{% block about %}{% endblock about %}">About</a></li>
                       <li><a href="/contact">Contact</a></li>
                     </ul>
                   </nav>
@@ -143,7 +143,13 @@
         </div>
       </div>
     </footer>
+
     </div>
+    <!-- MDB -->
+    <script
+    type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"
+    ></script>
     <script src="https://use.fontawesome.com/47c6d34241.js"></script>
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/jquery-ui.js' %}"></script>

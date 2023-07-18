@@ -1,0 +1,131 @@
+{% extends "basic.html" %}
+{% load static %}
+{% block content %}
+    <style>
+        .form-inp{
+            width:100%;
+            padding:5px;
+        }
+    </style>
+    
+
+
+    <div class="bg-light py-3">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 mb-0">
+              <a href="/">Home</a> <span class="mx-2 mb-0">/</span>
+              <strong class="text-black">Profile</strong>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="site-section">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <h2 class="h3 mb-5 text-black">Create Your Profile</h2>
+              
+            </div>
+            <div class="col-md-12">
+                <form method="POST" action="{% url 'create_patient_profile' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="address">Address:</label>
+                            <input type="text" id="address" name="address" class="form-control" required><br>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phone_number">Phone Number:</label>
+                            <input type="text" id="phone_number" name="phone_number" class="form-control" required><br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="age">Age:</label>
+                            <input type="number" id="age" name="age" class="form-control" required><br>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="blood_group">Blood Group:</label>
+                            <select id="blood_group" name="blood_group" class="form-control" required>
+                                {% for choice in BLOOD_GROUP_CHOICES %}
+                                    <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select><br>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="gender">Gender:</label>
+                            <select id="gender" name="gender" class="form-control" required>
+                                {% for choice in GENDER_CHOICES %}
+                                    <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select><br>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="profile_pic">Profile Picture:</label>
+                            <input type="file" id="profile_pic" name="profile_pic" class="form-control" accept="image/*" required><br>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="weight">Weight:</label>
+                            <input type="number" id="weight" name="weight" class="form-control" step="0.01" required><br>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="height">Height:</label>
+                            <input type="number" id="height" name="height" class="form-control" step="0.01" required><br>
+                        </div>
+                    </div>
+                    
+            
+                    
+            
+                    
+            
+                    
+            
+                    
+            
+                    
+            
+                    
+            
+                    
+            
+                    <label for="medical_conditions">Medical Conditions:</label>
+                    <textarea id="medical_conditions" name="medical_conditions" class="form-control" required></textarea><br>
+            
+                    <label for="surgeries">Surgeries:</label>
+                    <textarea id="surgeries" name="surgeries" class="form-control" required></textarea><br>
+            
+                    <label for="medications">Medications:</label>
+                    <textarea id="medications" name="medications" class="form-control" required></textarea><br>
+            
+                    <label for="allergies">Allergies:</label>
+                    <textarea id="allergies" name="allergies" class="form-control" required></textarea><br>
+            
+                    <label for="occupation">Occupation:</label>
+                    <input type="text" id="occupation" name="occupation" class="form-control" required><br>
+            
+                    <label for="exercise_habits">Exercise Habits:</label>
+                    <input type="text" id="exercise_habits" name="exercise_habits" class="form-control" required><br>
+            
+                    <label for="dietary_restrictions">Dietary Restrictions:</label>
+                    <input type="text" id="dietary_restrictions" name="dietary_restrictions" class="form-control" required><br>
+            
+                    <label for="family_medical_history">Family Medical History:</label>
+                    <textarea id="family_medical_history" name="family_medical_history" class="form-control" required></textarea><br>
+            
+                    <input type="submit" class="btn btn-primary" value="Create Profile">
+                </form>
+                
+                  
+            </div>
+            
+          </div>
+        </div>
+      </div>
+{% endblock content %}

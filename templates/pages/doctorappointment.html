@@ -1,0 +1,256 @@
+{% extends "basic.html" %}
+{% block content %}
+
+
+    <style>
+        /* CSS styles for the profile page */
+        .pg {
+            
+            background-color: #f5f5f5;
+        }
+
+       
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .profile-pic {
+            display: block;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .info {
+            margin-top: 20px;
+            text-align: left;
+            padding:10px;
+        }
+
+        .info-item {
+            margin-bottom: 10px;
+        }
+
+        .info-item label {
+            font-weight: bold;
+        }
+
+        .info-item span {
+            margin-left: 5px;
+        }
+        .tabs {
+            display: flex;
+          }
+        
+          .tab {
+            padding: 10px 20px;
+            
+            
+            cursor: pointer;
+            color:black;
+          }
+        
+          .tab.active {
+            color:blue;
+            font-weight: bold;
+            border-bottom: 1px solid blue;
+          }
+        
+          .content {
+            display: none;
+            margin-top: 10px;
+            padding: 20px;
+            
+            
+          }
+        
+          .content.active {
+            display: block;
+          }
+          
+          
+          
+    </style>
+</head>
+<body>
+    <div class="pg mb-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                
+                <div class="info card mb-4 shadow-0">
+                    <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" class="profile-pic">
+                    <div class="info-item mt-2 text-center">
+                        
+                        <h4 style="color:blue;">DR {{ profile.name }}</h4>
+                        <span>{{ profile.get_formatted_specialization_display }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Address:</label>
+                        <span>{{ profile.address }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Phone Number:</label>
+                        <span>{{ profile.contact_number }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Email:</label>
+                        <span>{{ profile.email }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Languages spoken:</label>
+                        <span>{{ profile.languages_spoken }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Gender:</label>
+                        <span>{{ profile.get_gender_display }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>experience:</label>
+                        <span>{{ profile.experience }} Year</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Biography:</label>
+                        <span>{{ profile.biography }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Qualifications:</label>
+                        <span>{{ profile.qualifications }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Affiliations:</label>
+                        <span>{{ profile.hospital_affiliations }}</span>
+                    </div>
+                    <!-- Add more info items for the remaining fields -->
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card info shadow-0" style="border:1px solid green;">
+                <p class="text-dark"> HealthFinda practitioners typically respond to appointment requests within an hour during the work day. In the unlikely event you do not get a response, the HealthFinda team will follow up on your behalf!</p>
+                </div>
+                <div class="info card shadow-0">
+                    <div class="tabs">
+                        <div class="tab active" onclick="showContent(1)">Availability</div>
+                        <div class="tab" onclick="showContent(2)">Reviews</div>
+                        <div class="tab" onclick="showContent(3)">Notice Board</div>
+                        
+                      </div>
+                      <div class="content active" id="content1">
+                        <table class="table table-striped">
+                            <thead>
+                              <tr>
+                                
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for availability in availabilities %}
+                              <tr>
+                                
+                                <td>{{ availability.available_date }}</td>
+                                <td>{{ availability.available_time }}</td>
+                                <td>
+                                  <a href="/makeappointment/{{availability.id}}/" class="btn btn-sm btn-primary">Book Now</a>
+                                </td>
+                                
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                      </div>
+          
+                      
+                      <div class="content" id="content2">
+                        <div class="text-end">
+                          {% if user.is_authenticated %}
+                          <button class="btn btn-sm btn-primary shadow-0" data-mdb-toggle="modal" data-mdb-target="#exampleModal">Add Review</button>
+                      {% else %}
+                          <div>
+                              <a href="/registration/login/">Login</a> OR <a href="/registration/signup/">Create Account</a> to add a review.
+                          </div>
+                      {% endif %}
+                      
+                        </div>
+                        {% for rev in reviews %}
+                        
+                        <h6 class="" style="color:blue;">{{rev.client.user.username}}</h6>
+                        <span>{{rev.timestamp}}</span>
+                        <p>{{rev.review}}</p>
+                        <hr>
+                        {% endfor %}
+                      </div>
+                      <div class="content" id="content3">
+                        
+                        {% for notice in notices %}
+                        
+                        <h6 class="" style="color:blue;">{{notice.title}}</h6>
+                        <span>{{notice.timestamp}}</span>
+                        <p>{{notice.message}}</p>
+                        <hr>
+                        {% endfor %}
+                      </div>
+                      
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showContent(tabNumber) {
+      // Hide all content elements
+      const contents = document.querySelectorAll('.content');
+      contents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      // Show the selected content
+      const selectedContent = document.getElementById(`content${tabNumber}`);
+      selectedContent.classList.add('active');
+
+      // Remove the active class from all tabs
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      // Add the active class to the selected tab
+      const selectedTab = document.querySelector(`.tab:nth-child(${tabNumber})`);
+      selectedTab.classList.add('active');
+    }
+  </script>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-dark" id="exampleModalLabel">Add Review</h5>
+          <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <form action="/addreview/{{profile.name}}/" method="post">{% csrf_token %}
+        <div class="modal-body">
+         
+          <textarea name="review" id="review" class="form-control mt-2" placeholder="Write something here"></textarea>
+          
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>  
+    
+{% endblock content %}

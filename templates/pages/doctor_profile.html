@@ -1,0 +1,313 @@
+{% extends "basic.html" %}
+{% block content %}
+
+
+    <style>
+        /* CSS styles for the profile page */
+        .pg {
+            
+            background-color: #f5f5f5;
+        }
+
+       
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .profile-pic {
+            display: block;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .info {
+            margin-top: 20px;
+            text-align: left;
+            padding:10px;
+        }
+
+        .info-item {
+            margin-bottom: 10px;
+        }
+
+        .info-item label {
+            font-weight: bold;
+        }
+
+        .info-item span {
+            margin-left: 5px;
+        }
+        .tabs {
+            display: flex;
+          }
+        
+          .tab {
+            padding: 10px 20px;
+            
+            
+            cursor: pointer;
+            color:black;
+          }
+        
+          .tab.active {
+            color:blue;
+            font-weight: bold;
+            border-bottom: 1px solid blue;
+          }
+        
+          .content {
+            display: none;
+            margin-top: 10px;
+            padding: 20px;
+            
+            
+          }
+        
+          .content.active {
+            display: block;
+          }
+    </style>
+</head>
+<body>
+    <div class="pg mb-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                
+                <div class="info card mb-4 shadow-0">
+                    <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" class="profile-pic">
+                    <div class="info-item mt-2 text-center">
+                        
+                        <h4 style="color:blue;">DR {{ profile.name }}</h4>
+                        <span>{{ profile.get_formatted_specialization_display }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Address:</label>
+                        <span>{{ profile.address }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Phone Number:</label>
+                        <span>{{ profile.contact_number }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Email:</label>
+                        <span>{{ profile.email }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Languages spoken:</label>
+                        <span>{{ profile.languages_spoken }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Gender:</label>
+                        <span>{{ profile.get_gender_display }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>experience:</label>
+                        <span>{{ profile.experience }} Year</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Biography:</label>
+                        <span>{{ profile.biography }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Qualifications:</label>
+                        <span>{{ profile.qualifications }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Affiliations:</label>
+                        <span>{{ profile.hospital_affiliations }}</span>
+                    </div>
+                    <!-- Add more info items for the remaining fields -->
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="info card shadow-0">
+                    <div class="tabs">
+                        <div class="tab active" onclick="showContent(1)">Appointments</div>
+                        <div class="tab" onclick="showContent(2)">Schedule</div>
+                        <div class="tab" onclick="showContent(3)">Notice</div>
+                        
+                      </div>
+                      <div class="content active" id="content1">
+                        <table class="table table-striped">
+                          <thead>
+                            <tr>
+                              
+                              <th>Patient</th>
+                              <th>Appointment Date</th>
+                              <th>Appointment Time</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for appointment in Appointments %}
+                            <tr>
+                              
+                              <td>{{ appointment.client }}</td>
+                              <td>{{ appointment.availability.available_date }}</td>
+                              <td>{{ appointment.availability.available_time }}</td>
+                              <td>
+                                {% if appointment.is_approved %}
+                                  Approved
+                                {% else %}
+                                <a href="{% url 'approve_appointment' appointment_id=appointment.id %}" style="color:blue;">Approve Appointment</a>
+                                {% endif %}
+                              </td>
+                              
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                        
+                      </div>
+          
+                      
+                      <div class="content" id="content2">
+                        <div class="text-end mb-3">
+                          <button class="btn btn-sm btn-primary shadow-0" data-mdb-toggle="modal" data-mdb-target="#sechdule">Schedule Now</button>
+                        </div>
+                        <table class="table table-striped">
+                          <thead>
+                            <tr>
+                              
+                              <th>Date</th>
+                              <th>Time</th>
+                              <th>Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for availability in availabilities %}
+                            <tr>
+                              
+                              <td>{{ availability.available_date }}</td>
+                              <td>{{ availability.available_time }}</td>
+                              <td style="color: {% if availability.is_available %}red{% else %}green{% endif %}">
+                                {% if availability.is_available %}
+                                  Not Booked
+                                {% else %}
+                                  Booked
+                                {% endif %}
+                              </td>
+                              
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                        
+                      </div>
+                      <div class="content" id="content3">
+                        <div class="text-end">
+                          <button class="btn btn-sm btn-primary shadow-0" data-mdb-toggle="modal" data-mdb-target="#exampleModal">Add Notice</button>
+                        </div>
+                        <div class="mt-2">
+                        {% for notice in notices %}
+                        
+                        <h6 class="" style="color:blue;">{{notice.title}}</h6>
+                        <span>{{notice.timestamp}}</span>
+                        <p>{{notice.message}}</p>
+                        <hr>
+                        {% endfor %}
+                      </div>
+                      </div>
+                </div>
+                <div class="info card shadow-0 p-2 mb-3">
+                  <div class="text-dark p-2">
+                    <h5>Patients Reviews About You</h5>
+                  </div>
+                  
+                  <div class="card-body">
+                  {% for rev in reviews %}
+                        
+                        <h6 class="" style="color:blue;">{{rev.client.user.username}}</h6>
+                        <span>{{rev.timestamp}}</span>
+                        <p>{{rev.review}}</p>
+                        <hr>
+                  {% endfor %}
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showContent(tabNumber) {
+      // Hide all content elements
+      const contents = document.querySelectorAll('.content');
+      contents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      // Show the selected content
+      const selectedContent = document.getElementById(`content${tabNumber}`);
+      selectedContent.classList.add('active');
+
+      // Remove the active class from all tabs
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      // Add the active class to the selected tab
+      const selectedTab = document.querySelector(`.tab:nth-child(${tabNumber})`);
+      selectedTab.classList.add('active');
+    }
+  </script>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="exampleModalLabel">Add Notice</h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="/addnotice/{{profile.name}}/" method="post">{% csrf_token %}
+      <div class="modal-body">
+        
+        <input type="text" name="title" id="title" class="form-control" placeholder="Enter title here">
+        <textarea name="message" id="message" class="form-control mt-2" placeholder="Write something here"></textarea>
+        <input type="date" name="date" id="title" class="form-control mt-2">
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>   
+
+
+<div class="modal fade" id="sechdule" tabindex="-1" aria-labelledby="sechdulelabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="sechdulelabel">Add Schedule</h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="/addavailablity/{{profile.name}}/" method="post">{% csrf_token %}
+      <div class="modal-body">
+        
+        <input type="date" name="date" id="date" class="form-control">
+        
+        <input type="time" name="time" id="time" class="form-control mt-2">
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div> 
+{% endblock content %}

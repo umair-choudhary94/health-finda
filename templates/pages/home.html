@@ -39,29 +39,34 @@
           <div class="site-block-cover-content text-center">
             <div class="tabs">
               <div class="tab active" onclick="showContent(1)">By Speciality</div>
-              <div class="tab" onclick="showContent(2)">By Name or Practice</div>
-              <div class="tab" onclick="showContent(3)">Telehealth</div>
+              <div class="tab" onclick="showContent(2)">By Name</div>
+              {% comment %} <div class="tab" onclick="showContent(3)">Telehealth</div> {% endcomment %}
             </div>
             <div class="content active" id="content1">
               <h3>
                 FIND AND BOOK HEALTH APPOINTMENTS, 24/7. <span style="color:blue">IT'S FREE!</span>
               </h3>
               
-                <form action="">
-                  <div class="search-container">
-                    <div class="select-option">
-                      <select name="" id="" class="">
-                        <option value="">Speciality</option>
-                      </select>
-                    </div>
-                    <div class="search-inp">
-                      <input type="text" class="" placeholder="Enter Street Address ">
-                    </div>
-                    <div class="submit-button">
-                      <button type="submit">Submit</button>
-                    </div>
+              <form action="{% url 'search_doctors' %}" method="GET">
+                <div class="search-container">
+                  <div class="select-option">
+                    <select name="speciality" class="w-100">
+                      <option value="">Speciality</option>
+                      {% for choice in specialization_choices %}
+                        <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                      {% endfor %}
+                    </select>
                   </div>
-                </form>
+                  <div class="search-inp">
+                    <input type="text" name="address" placeholder="Enter Street Address">
+                  </div>
+                  <div class="submit-button">
+                    <button type="submit">Submit</button>
+                  </div>
+                </div>
+              </form>
+              
+              
               
               
             </div>
@@ -71,11 +76,11 @@
               <h3>
                 FIND AND BOOK HEALTH APPOINTMENTS, 24/7. <span style="color:blue">IT'S FREE!</span>
               </h3>
-              <form action="">
+              <form action="{% url 'search_doctors' %}" method="GET">
                 <div class="search-container">
                   
                   <div class="search-inp2">
-                    <input type="text" class="" placeholder="Name or Practice ">
+                    <input type="text" class="" placeholder="Search By Name ">
                   </div>
                   <div class="submit-button">
                     <button type="submit">Submit</button>

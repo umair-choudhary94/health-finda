@@ -1,0 +1,74 @@
+{% extends "basic.html" %}
+
+
+{% load static %}
+{% block content %}
+<style>
+  .input-form{
+    padding:5px;
+    width:100%;
+  }
+  .form-button{
+    padding:7px 10px;
+    background-color:blue;
+    color:white;
+    border:1px solid blue;
+    border-radius: 5px;
+  }
+</style>
+
+<div class="site-blocks-cover p-md-4 p-2" style="background-image: url('{% static 'images/hero_1.jpg' %}');">
+ 
+<div class="row">
+  <div class="col-md-6 d-md-block d-none">
+    <h1 style="margin-top:80px;">Welcome To Largest <span style="color:blue;">Doctors</span> Community!</h1>
+    
+  </div>
+  <div class="col-md-6 col-12 mx-auto">
+    <div class="card p-md-4 p-2 bordered shadow-0 mt-2" style="background-color: rgba(255, 255, 255, 0.5);">
+      <form method="post" action="{% url 'signup' %}">
+        {% csrf_token %}
+        
+            {% comment %} <label for="first_name" class="text-dark">First Name:</label> {% endcomment %}
+        <input type="text" name="first_name" class="input-form" placeholder="Enter First Name" required><br><br>
+         
+          
+            {% comment %} <label for="last_name" class="text-dark">Last Name:</label> {% endcomment %}
+            <input type="text" name="last_name" class="input-form" placeholder="Enter Last Name" required><br><br>
+          
+        
+       
+        
+        {% comment %} <label for="username">Username:</label> {% endcomment %}
+        <input type="text" name="username" class="input-form" placeholder="Enter Username" required><br><br>
+        
+        {% comment %} <label for="email">Email:</label> {% endcomment %}
+        <input type="email" name="email" class="input-form" placeholder="Enter Email Address" required><br><br>
+        
+        {% comment %} <label for="password1">Password:</label> {% endcomment %}
+        <input type="password" name="password1" class="input-form" placeholder="Enter Password" required><br><br>
+        
+        {% comment %} <label for="password2">Confirm Password:</label> {% endcomment %}
+        <input type="password" name="password2" class="input-form" placeholder="Confirm Password" required><br><br>
+        
+        <label for="user_type" class="text-dark">Sign as:</label>
+        <input type="radio" name="user_type" value="patient"  required> Patient
+        <input type="radio" name="user_type" value="doctor" required> Doctor<br><br>
+        
+        <button type="submit" class="form-button">Register</button>
+      </form>
+      
+    </div>
+  </div>
+  
+</div>
+
+
+</div>
+
+
+
+{% endblock content %}
+
+
+  

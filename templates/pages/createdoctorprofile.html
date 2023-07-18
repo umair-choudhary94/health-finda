@@ -1,0 +1,118 @@
+{% extends "basic.html" %}
+{% load static %}
+{% block content %}
+    <style>
+        .form-inp{
+            width:100%;
+            padding:5px;
+        }
+    </style>
+    
+
+
+    <div class="bg-light py-3">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 mb-0">
+              <a href="/">Home</a> <span class="mx-2 mb-0">/</span>
+              <strong class="text-black">Profile</strong>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="site-section">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <h2 class="h3 mb-5 text-black">Create Your Profile</h2>
+              
+            </div>
+            <div class="col-md-12">
+                <form method="POST" action="{% url 'create_doctor_profile' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" name="name" class="form-control" required><br>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="gender">Gender:</label>
+                            <select id="gender" name="gender" class="form-control" required>
+                                {% for choice in GENDER_CHOICES %}
+                                    <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select><br>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="specialization">Specialization:</label>
+                            <select id="specialization" name="specialization" class="form-control" required>
+                                {% for choice in SPECIALIZATION_CHOICES %}
+                                    <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select><br>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="qualifications">Qualifications:</label>
+                            <input type="text" id="qualifications" name="qualifications" class="form-control" required><br>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="experience">Experience:</label>
+                            <input type="number" id="experience" name="experience" class="form-control" required><br>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="contact_number">Contact Number:</label>
+                            <input type="text" id="contact_number" name="contact_number" class="form-control" required><br>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" class="form-control" required><br>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="address">Address:</label>
+                            <input type="text" id="address" name="address" class="form-control" required><br>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="biography">Biography:</label>
+                            <textarea id="biography" name="biography" class="form-control" required></textarea><br>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="languages_spoken">Languages Spoken:</label>
+                            <input type="text" id="languages_spoken" name="languages_spoken" class="form-control" required><br>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="hospital_affiliations">Hospital Affiliations:</label>
+                            <input type="text" id="hospital_affiliations" name="hospital_affiliations" class="form-control" required><br>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="profile_pic">Profile Picture:</label>
+                            <input type="file" id="profile_pic" name="profile_pic" class="form-control" accept="image/*" required><br>
+                        </div>
+                    </div>
+                    
+                    <input type="submit" class="btn btn-primary" value="Create Profile">
+                </form>
+                
+                  
+            </div>
+            
+          </div>
+        </div>
+      </div>
+{% endblock content %}

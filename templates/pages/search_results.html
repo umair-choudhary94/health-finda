@@ -1,0 +1,50 @@
+{% extends "basic.html" %}
+{% block content %}
+
+
+<section style="background-color: #eee;">
+    <div class="text-center container py-5">
+      <h4 class="mt-4 mb-5"><strong>Search Results</strong></h4>
+  
+      <div class="row">
+        {% for doctor in doctors %}
+        <div class="col-lg-4 col-md-12 mb-4">
+            <a href="/doctor/{{doctor.id}}/">
+          <div class="card">
+            <div class=" hover-zoom ripple ripple-surface ripple-surface-light"
+              data-mdb-ripple-color="light">
+              <img src="/media/{{doctor.profile_pic}}"
+                class="w-100" style="height:50vh;"/>
+              <a href="/doctor/{{doctor.name}}/">
+                <div class="mask">
+                  <div class="d-flex justify-content-start align-items-end h-100">
+                    <h5><span class="badge bg-primary ms-2">{{doctor.experience}} Year</span></h5>
+                  </div>
+                </div>
+                <div class="hover-overlay">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </div>
+              </a>
+            </div>
+            <div class="card-body">
+              <a href="" class="text-reset">
+                <h5 class="card-title mb-3" style="color:blue;">Dr {{doctor.name}}</h5>
+              </a>
+              <a href="" class="text-reset">
+                <p>{{doctor.get_formatted_specialization_display}}</p>
+              </a>
+              <h6 class="mb-3">{{doctor.address}}</h6>
+            </div>
+          </div>
+        </a>
+        </div>
+  
+        {% empty %}
+        <p>No doctors found.</p>
+        {% endfor %}
+      </div>
+  
+      
+    </div>
+  </section>
+{% endblock %}

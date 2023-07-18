@@ -1,0 +1,257 @@
+{% extends "basic.html" %}
+{% block content %}
+
+
+    <style>
+        /* CSS styles for the profile page */
+        .pg {
+            
+            background-color: #f5f5f5;
+        }
+
+       
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .profile-pic {
+            display: block;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .info {
+            margin-top: 20px;
+            text-align: left;
+            padding:10px;
+        }
+
+        .info-item {
+            margin-bottom: 10px;
+        }
+
+        .info-item label {
+            font-weight: bold;
+        }
+
+        .info-item span {
+            margin-left: 5px;
+        }
+        .tabs {
+            display: flex;
+          }
+        
+          .tab {
+            padding: 10px 20px;
+            
+            
+            cursor: pointer;
+            color:black;
+          }
+        
+          .tab.active {
+            color:blue;
+            font-weight: bold;
+            border-bottom: 1px solid blue;
+          }
+        
+          .content {
+            display: none;
+            margin-top: 10px;
+            padding: 20px;
+            
+            
+          }
+        
+          .content.active {
+            display: block;
+          }
+    </style>
+</head>
+<body>
+    <div class="pg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                
+                <div class="info card shadow-0">
+                    <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" class="profile-pic">
+                    <div class="info-item mt-2">
+                        <label>Username:</label>
+                        <span>{{ profile.user.username }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Address:</label>
+                        <span>{{ profile.address }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Phone Number:</label>
+                        <span>{{ profile.phone_number }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Age:</label>
+                        <span>{{ profile.age }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Blood Group:</label>
+                        <span>{{ profile.get_blood_group_display }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Gender:</label>
+                        <span>{{ profile.get_gender_display }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Weight:</label>
+                        <span>{{ profile.weight }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Height:</label>
+                        <span>{{ profile.height }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Occupation:</label>
+                        <span>{{ profile.occupation }}</span>
+                    </div>
+                    <div class="info-item">
+                      <label>Diet:</label>
+                      <span>{{ profile.dietary_restrictions }}</span>
+                    </div>
+                    <div class="info-item">
+                      <label>Excercise Habit:</label>
+                      <span>{{ profile.exercise_habits }}</span>
+                    </div>
+                    <div class="info-item">
+                      <label>Allergies:</label>
+                      <span>{{ profile.allergies }}</span>
+                    </div>
+                  <div class="info-item">
+                    <label>Medical History:</label>
+                    <span>{{ profile.family_medical_history }}</span>
+                  </div>
+                    <!-- Add more info items for the remaining fields -->
+                </div>
+            </div>
+            <div class="col-md-8">
+                
+                
+              <div class="info card shadow-0">
+                <h4 class="text-dark">Insurance Information</h4>
+                <div class="card-body">
+                
+                  {% if insurance %}
+                      <table class="table table-striped">
+                          <tr>
+                              
+                              <th>Insurance Carrier</th>
+                              <th>Plan</th>
+                              <th>Contact</th>
+                              <th>Policy Number</th>
+                              <th>Group Number</th>
+                              <th>Social Security Number</th>
+                          </tr>
+                          <tr>
+                              
+                              <td>{{ insurance.Insurancecarrier }}</td>
+                              <td>{{ insurance.plan }}</td>
+                              <td>{{ insurance.Contact }}</td>
+                              <td>{{ insurance.policynumber }}</td>
+                              <td>{{ insurance.groupnumber }}</td>
+                              <td>{{ insurance.socialsecuritynumber }}</td>
+                          </tr>
+                      </table>
+                  {% else %}
+                      <p>No insurance information available.</p>
+                  {% endif %}
+                </div>
+                
+              </div>
+              <div class="info card shadow-0 mb-2">
+                <h4 class="text-dark">Emergency Contact Information</h4>
+                <div class="card-body">
+                  {% comment %} <div class="text-end mb-3">
+                    <button class="btn btn-sm btn-primary shadow-0" data-mdb-toggle="modal" data-mdb-target="#sechdule">Add Contact</button>
+                  </div> {% endcomment %}
+                    {% if emergency_contacts %}
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Name</th>
+                            <th>Relation</th>
+                            <th>Contact</th>
+                        </tr>
+                        {% for emergency_contact in emergency_contacts %}
+                        <tr>
+                            <td>{{ emergency_contact.name }}</td>
+                            <td>{{ emergency_contact.relation }}</td>
+                            <td>{{ emergency_contact.Contact }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    {% else %}
+                    <p>No emergency contact information available.</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="info card shadow-0 mb-2">
+                <h4 class="text-dark">Health Information</h4>
+                <div class="card-body">
+                    
+                  <div class="text-end mb-3">
+                    <button class="btn btn-sm btn-primary shadow-0" data-mdb-toggle="modal" data-mdb-target="#sechdule">Add Note</button>
+                  </div>
+                    {% if healthinfo %}
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Doctor</th>
+                            <th>specialization</th>
+                            <th>Note</th>
+                        </tr>
+                        {% for health in healthinfo %}
+                        <tr>
+                            <td>{{ health.doctor.name }}</td>
+                            <td>{{ health.doctor.get_formatted_specialization_display }}</td>
+                            <td>{{ health.note }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    {% else %}
+                    <p>No Health information is available yet!.</p>
+                    {% endif %}
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+  <div class="modal fade" id="sechdule" tabindex="-1" aria-labelledby="sechdulelabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-dark" id="sechdulelabel">Add Note</h5>
+          <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="/addnote/" method="post">{% csrf_token %}
+        <div class="modal-body">
+            <textarea name="note" class="form-control" id="note" cols="30" rows="10" placeholder="Write something about patient"></textarea>
+            <input type="hidden" name="patient" value="{{profile.user.id}}">
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div> 
+{% endblock content %}
