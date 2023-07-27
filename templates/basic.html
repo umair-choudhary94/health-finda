@@ -36,6 +36,7 @@
 
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCakEwiF9Qh7mjwDZJhgiqAtd6Lytfm96g&libraries=places"></script>
 
 </head>
 <body>
@@ -70,8 +71,14 @@
                             </ul>
                           </li> {% endcomment %}
                           <li><a href="/registration/signup/">Join HealthFinda</a></li>
-                          <li><a href="/registration/login/">Practice Login</a></li>
                           
+                          {% if user.is_authenticated %}
+                            
+                              <li><a href="/registration/logout/">Logout</a></li>
+                          {% else %}
+                              <li><a href="/registration/login/">Doctor Login</a></li>
+                              <li><a href="/registration/login/">Patient  Login</a></li>
+                          {% endif %}
                         </ul>
                       </li>
                       <li><a href="/about" class="{% block about %}{% endblock about %}">About</a></li>
