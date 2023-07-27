@@ -4,9 +4,9 @@ from django.contrib.auth.models import User
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
     user_type = models.CharField(max_length=10, default="nothing")
-    is_verified = models.BooleanField(default=False)  # New field for verified status
+    is_verified = models.BooleanField(default=False)  
 
-    # Add any additional fields you need for the user profile
+   
 
     def __str__(self):
         return self.user.username
@@ -134,6 +134,8 @@ class doctorProfile(models.Model):
     languages_spoken = models.CharField(max_length=100, default="")
     hospital_affiliations = models.CharField(max_length=200, default="")
     profile_pic = models.ImageField(upload_to='doctor_profile_pics/', default="default.jpg")
+    latitude = models.CharField(max_length=100,default="0000")
+    longitude = models.CharField(max_length=100,default="0000")
     @property
     def get_formatted_specialization_display(self):
         return self.specialization[2:].capitalize() if self.specialization.startswith('p_') else self.specialization
