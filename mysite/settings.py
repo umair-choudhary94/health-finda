@@ -55,7 +55,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
-CSRF_TRUSTED_ORIGINS = ["https://healthfinda.up.railway.app"]
+
 ROOT_URLCONF = 'mysite.urls'
 
 TEMPLATES = [
@@ -114,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+CSRF_TRUSTED_ORIGINS = ["https://healthfinda.up.railway.app"]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
