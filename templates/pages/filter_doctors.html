@@ -1,0 +1,208 @@
+
+
+{% extends "basic.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+    /* Set map height */
+    #map {
+        height: 100vh;
+    }
+</style>
+<div class="container">
+
+    
+    <form action="{% url 'filter_doctors' %}" method="GET">
+        <div class="row">
+            <div class="col-md-2">
+                <label for="specialty">Specialty:</label>
+                <select name="specialty" id="specialty"  class="form-control">
+                    <option value="">All</option>
+                    {% for choice in specialty %}
+                        <option value="{{ choice.0 }}" {% if specialty == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="gender">Gender:</label>
+                <select name="gender" id="gender" class="form-control">
+                    <option value="">All</option>
+                    {% for choice in gender %}
+                        <option value="{{ choice.0 }}" {% if gender == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="location">Location:</label>
+                <input type="text" name="location" id="locationInput" value="{{ location }}" class="form-control">
+                <div id="suggestionList"></div>
+            </div>
+            <div class="col-md-3">
+                <label for="spoken_language">Spoken Language:</label>
+                <input type="text" name="spoken_language" id="spoken_language" value="{{ spoken_language }}" class="form-control">
+            </div>
+            <div class="col-md-2" style="margin-top:32px;">
+                
+                <button type="submit" class="btn btn-primary">Search Now</button>
+            </div>
+        </div>
+        
+
+        
+
+        
+
+        
+
+        
+    </form>
+    <div class="row mt-4">
+        <div class="col-md-4" style="height: 100vh; overflow-y: scroll;">
+            {% if doctors %}
+                {% for doc in doctors %}
+                
+                    
+                      <div class="card shadow-0 border rounded-3 mb-1">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-4">
+                              <div class="hover-zoom ripple rounded ripple-surface">
+                                <img src="/media/{{doc.profile_pic}}/"
+                                  class="w-100" />
+                                  <a href="/doctor/{{doc.name}}/">
+                                  <div class="hover-overlay">
+                                    <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                                  </div>
+                                </a>
+                              </div>
+                            </div>
+                            <div class="col-8">
+                              <h5>DR {{ doc.name }}</h5>
+                              <div class="d-flex flex-row">
+                                <div class="text-danger mb-1 me-2">
+                                  <i class="fa fa-star"></i>
+                                  <i class="fa fa-star"></i>
+                                  <i class="fa fa-star"></i>
+                                  <i class="fa fa-star"></i>
+                                </div>
+                                <span>{{doc.get_formatted_specialization_display}}</span>
+                              </div>
+                              <div class="mt-1 mb-0 text-muted small">
+                                <span>{{doc.address}}</span>
+                                <span class="text-primary"> • </span>
+                                <span>{{doc.contact_number}}</span>
+                                <span class="text-primary"> • </span>
+                                <span>{{doc.gender}}<br /></span>
+                              </div>
+                              
+                              
+                            </div>
+                            
+                          </div>
+                        </div>
+                      </div>
+                    
+                {% endfor %}
+                  
+                
+                {% else %}
+                    <p>No doctors found with the selected criteria.</p>
+                {% endif %}
+        </div>
+        <div class="col-md-8">
+            <div id="map"></div>
+        </div>
+    </div>
+    
+</div>    
+
+<script>
+    // Initialize the locations array
+    const locations = [
+        // Add latitude and longitude of each doctor's address
+        {% for doc in doctors %}
+            {% if doc.latitude and doc.longitude %}
+                { name: '{{ doc.name }}', lat: {{ doc.latitude }}, lng: {{ doc.longitude }} },
+            {% endif %}
+        {% endfor %}
+    ];
+
+    function initMap() {
+        const mapOptions = {
+            center: { lat: 30.0, lng: 70.0 }, // Set the initial map center (approximately Pakistan's center)
+            zoom: 8, // Set the initial zoom level
+        };
+        const map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        // Display the names on the map
+        const infowindow = new google.maps.InfoWindow();
+        const markers = locations.map(location => {
+            const marker = new google.maps.Marker({
+                position: { lat: parseFloat(location.lat), lng: parseFloat(location.lng) },
+                map: map,
+                title: location.name,
+                icon: {
+                    url: '{% static 'images/location.png' %}', // Replace with the path to your custom icon image
+                    scaledSize: new google.maps.Size(50, 50), // Set the desired size of the marker icon
+                },
+            });
+
+            // Add a click event listener to show an info window with the name when the marker is clicked
+            marker.addListener('click', () => {
+                infowindow.setContent(location.name);
+                infowindow.open(map, marker);
+            });
+
+            return marker;
+        });
+
+        // Cluster markers if there are multiple locations
+        if (locations.length > 1) {
+            const markerCluster = new MarkerClusterer(map, markers, {
+                imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
+            });
+        }
+    }
+    // Initialize the Places service
+    const placesService = new google.maps.places.PlacesService(document.createElement('div'));
+
+    // Set up the Autocomplete functionality for the input field
+    const input = document.getElementById('locationInput');
+    const autocomplete = new google.maps.places.Autocomplete(input);
+
+    // Handle the place_changed event when a user selects a location from the suggestions
+    autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+
+        // Display the selected location's details
+        if (place.geometry && place.geometry.location) {
+            const latitude = place.geometry.location.lat();
+            const longitude = place.geometry.location.lng();
+            const address = place.formatted_address;
+
+           
+        }
+    });
+
+    // Optional: Display the suggestion list based on user input
+    const suggestionList = document.getElementById('suggestionList');
+    input.addEventListener('input', () => {
+        const query = input.value;
+
+        // Use the Places service to fetch predictions for the input value
+        placesService.getQueryPredictions({ input: query }, (predictions, status) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                const suggestions = predictions.map(prediction => prediction.description);
+                const suggestionItems = suggestions.map(suggestion => `<div>${suggestion}</div>`);
+                suggestionList.innerHTML = suggestionItems.join('');
+            } else {
+                suggestionList.innerHTML = '';
+            }
+        });
+    });
+</script>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCakEwiF9Qh7mjwDZJhgiqAtd6Lytfm96g&callback=initMap"></script>
+{% endblock %}

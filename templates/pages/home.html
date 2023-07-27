@@ -47,7 +47,7 @@
                 FIND AND BOOK HEALTH APPOINTMENTS, 24/7. <span style="color:blue">IT'S FREE!</span>
               </h3>
               
-              <form action="{% url 'search_doctors' %}" method="GET">
+              <form action="{% url 'filter_doctors' %}" method="GET">
                 <div class="search-container">
                   <div class="select-option">
                     <select name="speciality" class="w-100">
@@ -58,7 +58,8 @@
                     </select>
                   </div>
                   <div class="search-inp">
-                    <input type="text" name="address" placeholder="Enter Street Address">
+                    <input type="text" name="location" id="locationInput" value="{{ location }}" placeholder="Enter Street Address">
+                    <div id="suggestionList"></div>
                   </div>
                   <div class="submit-button">
                     <button type="submit">Submit</button>
@@ -76,11 +77,11 @@
               <h3>
                 FIND AND BOOK HEALTH APPOINTMENTS, 24/7. <span style="color:blue">IT'S FREE!</span>
               </h3>
-              <form action="{% url 'search_doctors' %}" method="GET">
+              <form action="{% url 'filter_doctors' %}" method="GET">
                 <div class="search-container">
                   
                   <div class="search-inp2">
-                    <input type="text" class="" placeholder="Search By Name ">
+                    <input type="text" class="" name="doctor_name" placeholder="Search By Name ">
                   </div>
                   <div class="submit-button">
                     <button type="submit">Submit</button>
@@ -257,5 +258,44 @@
       const selectedTab = document.querySelector(`.tab:nth-child(${tabNumber})`);
       selectedTab.classList.add('active');
     }
+
+
+    // Initialize the Places service
+    const placesService = new google.maps.places.PlacesService(document.createElement('div'));
+
+    // Set up the Autocomplete functionality for the input field
+    const input = document.getElementById('locationInput');
+    const autocomplete = new google.maps.places.Autocomplete(input);
+
+    // Handle the place_changed event when a user selects a location from the suggestions
+    autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+
+        // Display the selected location's details
+        if (place.geometry && place.geometry.location) {
+            const latitude = place.geometry.location.lat();
+            const longitude = place.geometry.location.lng();
+            const address = place.formatted_address;
+
+           
+        }
+    });
+
+    // Optional: Display the suggestion list based on user input
+    const suggestionList = document.getElementById('suggestionList');
+    input.addEventListener('input', () => {
+        const query = input.value;
+
+        // Use the Places service to fetch predictions for the input value
+        placesService.getQueryPredictions({ input: query }, (predictions, status) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                const suggestions = predictions.map(prediction => prediction.description);
+                const suggestionItems = suggestions.map(suggestion => `<div>${suggestion}</div>`);
+                suggestionList.innerHTML = suggestionItems.join('');
+            } else {
+                suggestionList.innerHTML = '';
+            }
+        });
+    });
   </script>
 {% endblock content %}

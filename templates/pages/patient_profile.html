@@ -148,6 +148,7 @@
                       
                     </div>
                     <div class="content active" id="content1">
+                      <div class="table-responsive">
                       <table class="table table-striped">
                         <thead>
                           <tr>
@@ -177,7 +178,7 @@
                           {% endfor %}
                         </tbody>
                       </table>
-                      
+                    </div>
                     </div>
         
                     
@@ -192,6 +193,7 @@
                 <div class="card-body">
                 
                   {% if insurance %}
+                  <div class="table-responsive">
                       <table class="table table-striped">
                           <tr>
                               
@@ -212,6 +214,7 @@
                               <td>{{ insurance.socialsecuritynumber }}</td>
                           </tr>
                       </table>
+                    </div>
                   {% else %}
                       <p>No insurance information available.</p>
                   {% endif %}
@@ -225,6 +228,7 @@
                     <button class="btn btn-sm btn-primary shadow-0" data-mdb-toggle="modal" data-mdb-target="#sechdule">Add Contact</button>
                   </div>
                     {% if emergency_contacts %}
+                    <div class="table-responsive">
                     <table class="table table-striped">
                         <tr>
                             <th>Name</th>
@@ -239,6 +243,7 @@
                         </tr>
                         {% endfor %}
                     </table>
+                  </div>
                     {% else %}
                     <p>No emergency contact information available.</p>
                     {% endif %}

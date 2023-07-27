@@ -137,6 +137,7 @@
                         
                       </div>
                       <div class="content active" id="content1">
+                        <div class="table-responsive">
                         <table class="table table-striped">
                           <thead>
                             <tr>
@@ -151,7 +152,7 @@
                             {% for appointment in Appointments %}
                             <tr>
                               
-                              <td>{{ appointment.client }}</td>
+                              <td><a href="/patient/{{appointment.client.user.id}}/">{{ appointment.client }}</a></td>
                               <td>{{ appointment.availability.available_date }}</td>
                               <td>{{ appointment.availability.available_time }}</td>
                               <td>
@@ -166,7 +167,7 @@
                             {% endfor %}
                           </tbody>
                         </table>
-                        
+                      </div>
                       </div>
           
                       
@@ -174,6 +175,7 @@
                         <div class="text-end mb-3">
                           <button class="btn btn-sm btn-primary shadow-0" data-mdb-toggle="modal" data-mdb-target="#sechdule">Schedule Now</button>
                         </div>
+                        <div class="table-responsive">
                         <table class="table table-striped">
                           <thead>
                             <tr>
@@ -201,7 +203,7 @@
                             {% endfor %}
                           </tbody>
                         </table>
-                        
+                      </div>
                       </div>
                       <div class="content" id="content3">
                         <div class="text-end">

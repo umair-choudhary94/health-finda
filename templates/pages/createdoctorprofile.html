@@ -80,9 +80,13 @@
                         </div>
                         <div class="col-md-6">
                             <label for="address">Address:</label>
-                            <input type="text" id="address" name="address" class="form-control" required><br>
+                            <input type="text" id="locationInput"  class="form-control" required><br>
+                            <div id="suggestionList"></div>
                         </div>
                     </div>
+                    <input id="selectedLatitude" type="hidden" name="latitude">
+                    <input id="selectedLongitude" type="hidden" name="longitude">
+                    <input id="selectedAddress" type="hidden" name="address"> 
                     
                     <div class="row">
                         <div class="col-md-6">
@@ -115,4 +119,54 @@
           </div>
         </div>
       </div>
+
+      <script>
+        // Initialize the Places service
+        const placesService = new google.maps.places.PlacesService(document.createElement('div'));
+
+        // Set up the Autocomplete functionality for the input field
+        const input = document.getElementById('locationInput');
+        const autocomplete = new google.maps.places.Autocomplete(input);
+
+        // Handle the place_changed event when a user selects a location from the suggestions
+        autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace();
+
+            // Display the selected location's details
+            if (place.geometry && place.geometry.location) {
+                const latitude = place.geometry.location.lat();
+                const longitude = place.geometry.location.lng();
+                const address = place.formatted_address;
+
+                // Set the selected location details to the hidden input fields
+                document.getElementById('selectedLatitude').value = latitude;
+                document.getElementById('selectedLongitude').value = longitude;
+                document.getElementById('selectedAddress').value = address;
+
+                // Display the selected location details on the screen
+                document.getElementById('latitudeDisplay').textContent = latitude;
+                document.getElementById('longitudeDisplay').textContent = longitude;
+                document.getElementById('addressDisplay').textContent = address;
+
+                console.log(`Selected location: ${address}, Lat: ${latitude}, Lng: ${longitude}`);
+            }
+        });
+
+        // Optional: Display the suggestion list based on user input
+        const suggestionList = document.getElementById('suggestionList');
+        input.addEventListener('input', () => {
+            const query = input.value;
+
+            // Use the Places service to fetch predictions for the input value
+            placesService.getQueryPredictions({ input: query }, (predictions, status) => {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    const suggestions = predictions.map(prediction => prediction.description);
+                    const suggestionItems = suggestions.map(suggestion => `<div>${suggestion}</div>`);
+                    suggestionList.innerHTML = suggestionItems.join('');
+                } else {
+                    suggestionList.innerHTML = '';
+                }
+            });
+        });
+    </script>
 {% endblock content %}
