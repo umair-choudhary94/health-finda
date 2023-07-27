@@ -189,7 +189,8 @@ def create_doctor_profile(request):
         languages_spoken = request.POST.get('languages_spoken')
         hospital_affiliations = request.POST.get('hospital_affiliations')
         profile_pic = request.FILES.get('profile_pic')
-
+        latitude = request.POST["latitude"]
+        longitude = request.POST["longitude"]
         # Create the doctorProfile object
         doctor = doctorProfile(
             user = request.user,
@@ -204,7 +205,9 @@ def create_doctor_profile(request):
             biography=biography,
             languages_spoken=languages_spoken,
             hospital_affiliations=hospital_affiliations,
-            profile_pic=profile_pic
+            profile_pic=profile_pic,
+            latitude =latitude,
+            longitude = longitude,
         )
         doctor.save()
 
@@ -275,7 +278,7 @@ def makeappointment(request,id):
     avail = Availability.objects.get(id=id)
     
     if request.method == "POST":
-        reason = request.POST["reason"]
+        reason = request.POST.get("reason")
         user = request.user
         subject = "Appointment Booking"
         # Specify the list of additional email recipients
@@ -286,7 +289,9 @@ def makeappointment(request,id):
 
         # Combine the additional recipients list with the default email sender
         recipients = [settings.DEFAULT_FROM_EMAIL] + additional_recipients
-
+        profile = PatientProfile.objects.get(user=user.id)
+        obj = Appointment.objects.create(availability=avail, reason=reason, client=profile)
+        
         # Send the email to all recipients
         send_mail(
             subject,
@@ -296,9 +301,7 @@ def makeappointment(request,id):
             fail_silently=False,
         )
         
-        profile = PatientProfile.objects.get(user=user.id)
-        obj = Appointment(availability=avail,reason=reason,client=profile)
-        obj.save()
+        
         return redirect("profile")
     context = {
         "avail" : avail,
@@ -386,5 +389,52 @@ def addnote(request):
         obj.save()
         print(patient)
         return redirect(f"/patient/{patient}/")
+    
+def filter_doctors(request):
+    # Get filter parameters from the URL
+    specialty = request.GET.get('specialty', '')
+    location = request.GET.get('location', '')
+    gender = request.GET.get('gender', '')
+    spoken_language = request.GET.get('spoken_language', '')
+    doctor_name = request.GET.get('doctor_name','')
+    # Prepare the Q objects for the filter
+    filter_queries = Q()
+
+    if specialty:
+        filter_queries &= Q(specialization=specialty)
+    if location:
+        filter_queries &= Q(address__icontains=location)
+    if doctor_name:
+        filter_queries &= Q(name__icontains=doctor_name)
+    if gender:
+        filter_queries &= Q(gender=gender)
+    if spoken_language:
+        # Split the spoken_language parameter into individual words
+        words = spoken_language.split()
+
+        # Create a list of Q objects for each word in the spoken_language parameter
+        language_queries = [Q(languages_spoken__icontains=word) for word in words]
+
+        # Combine the Q objects using the OR operator (|)
+        if language_queries:
+            combined_language_query = Q()
+            for q in language_queries:
+                combined_language_query |= q
+
+            filter_queries &= combined_language_query
+
+    # Filter doctor profiles based on the combined Q objects
+    doctors = doctorProfile.objects.filter(filter_queries)
+    gender = doctorProfile.GENDER_CHOICES
+    specialty = doctorProfile.SPECIALIZATION_CHOICES
+    print(specialty)
+    context = {
+        'doctors': doctors,
+        'specialty': specialty,
+        'location': location,
+        'gender': gender,
+        'spoken_language': spoken_language,
+    }
+    return render(request, 'pages/filter_doctors.html', context)
 
 

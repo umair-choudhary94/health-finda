@@ -18,6 +18,7 @@ urlpatterns = [
     path("addinsuranceinfo/",addinsuranceinfo,name="addinsuranceinfo"),
     path("addcontactinfo/",addcontactinfo,name="addcontactinfo"),
     path("patient/<int:id>/",getpatient,name="getpatient"),
-    path("addnote/",addnote,name="addnote")
+    path("addnote/",addnote,name="addnote"),
+    path('filter/', filter_doctors, name='filter_doctors'),
     
 ]
